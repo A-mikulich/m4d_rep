@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Формирование МЧД</title>
+
+    <!-- Bootstrap -->
+    <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- Switchery -->
+    <link href="vendors/switchery/dist/switchery.min.css" rel="stylesheet">
+    <!-- starrr -->
+    <!-- Custom Theme Style -->
+    <link href="build/css/custom.css" rel="stylesheet">
+    <link href="build/css/edit.css" rel="stylesheet">
+  
+    <link href="build/icomoon/style.css" rel="stylesheet">
+    <script type="text/javascript" src="js/jquery-2.0.0.min.js"></script>
+
+    <script type="text/javascript">
+   
+    $(document).ready(function(){
+      // Smart Wizard       
+      $('#wizard').smartWizard({transitionEffect:'slideleft',onLeaveStep:leaveAStepCallback, onFinish:onFinishCallback});
+
+      function leaveAStepCallback(obj){
+        var step_num= obj.attr('rel');
+        return validateSteps(step_num);
+      }
+      
+      function onFinishCallback(){
+       if(validateAllSteps()){
+        let form = document.querySelector('[name=prov]');
+        form.submit();
+       }
+      }
+            
+    });
+     
+    function validateAllSteps(){
+       var isStepValid = true;
+       
+       if(validateStep1() == false){
+         isStepValid = false;
+         $('#wizard').smartWizard('setError',{stepnum:1,iserror:true});         
+       }else{
+         $('#wizard').smartWizard('setError',{stepnum:1,iserror:false});
+       }
+
+       if(validateStep2() == false){
+         isStepValid = false;
+         $('#wizard').smartWizard('setError',{stepnum:1,iserror:true});         
+       }else{
+         $('#wizard').smartWizard('setError',{stepnum:1,iserror:false});
+       }
+
+       if(validateStep3() == false){
+         isStepValid = false;
+         $('#wizard').smartWizard('setError',{stepnum:1,iserror:true});         
+       }else{
+         $('#wizard').smartWizard('setError',{stepnum:1,iserror:false});
+       }
+       
+       
+       if(!isStepValid){
+          $('#wizard').smartWizard('showMessage','Исправьте ошибки!');
+       }
+              
+       return isStepValid;
+    }   
+    
+    
+    function validateSteps(step){
+      var isStepValid = true;
+      // validate step 1
+      if(step == 1){
+        if(validateStep1() == false ){
+          isStepValid = false; 
+          
+          $('#wizard').smartWizard('setError',{stepnum:step,iserror:true});         
+        }else{
+          $('#wizard').smartWizard('setError',{stepnum:step,iserror:false});
+        }
+      }
+
+      if(step == 2){
+        if(validateStep2() == false ){
+          isStepValid = false; 
+          $('#wizard').smartWizard('setError',{stepnum:step,iserror:true});         
+        }else{
+          $('#wizard').smartWizard('setError',{stepnum:step,iserror:false});
+        }
+      }
+      
+      if(step == 3){
+        if(validateStep3() == false ){
+          isStepValid = false; 
+          $('#wizard').smartWizard('setError',{stepnum:step,iserror:true});         
+        }else{
+          $('#wizard').smartWizard('setError',{stepnum:step,iserror:false});
+        }
+      }
+      return isStepValid;
+    }
+    
+    function validateStep1(){
+       var isValid = true; 
+       // Validate Username
+       var OKUD = $('#OKUD').val();
+       if(OKUD && OKUD.length > 0){
+         if(!isValidOKUD(OKUD)){
+           isValid = false;
+           $('#msg_okud').html('OKUD состоит только из цифр').show();           
+         }else{
+          $('#msg_okud').html('').hide();
+         }
+       }else{
+         isValid = false;
+         $('#msg_okud').html('Заполните поле').show();
+       }   
+       
+       var date = $('#DataNach').val();
+       if(!date && date.length <= 0){
+         isValid = false;
+         $('#msg_DataNach').html('Заполните поле').show();
+       }else{
+         $('#msg_DataNach').html('').hide();
+       }
+
+       var dateO = $('#DataOkon').val();
+       if(!dateO && dateO.length <= 0){
+         isValid = false;
+         $('#msg_DataOkon').html('Заполните поле').show();
+       }else{
+         $('#msg_DataOkon').html('').hide();
+       }
+       
+       return isValid;
+    }
+    
+    function validateStep2(){
+       var isValid = true;  
+       
+       var SvDover = $('#SvDover').val();
+       if(SvDover == 0){
+         isValid = false;
+         $('#msg_SvDover').html('Заполните поле').show();
+       }else{
+         $('#msg_SvDover').html('').hide();
+       }
+
+       if (SvDover == 'РосОргДовер'){
+        
+       
+       var naimorg = $('#NaimOrg').val();
+       if(!naimorg && naimorg.length <= 0){
+         isValid = false;
+         $('#msg_NaimOrg').html('Заполните поле').show();
+       }else{
+         $('#msg_NaimOrg').html('').hide();
+       }
+
+       var INNYL1 = $('#INNYL1').val();
+       if(!INNYL1 && INNYL1.length <= 0){
+         isValid = false;
+         $('#msg_INNYL1').html('Заполните поле').show();
+       }else{
+         $('#msg_INNYL1').html('').hide();
+       }
+
+       var KPP1 = $('#KPP1').val();
+       if(!KPP1 && KPP1.length <= 0){
+         isValid = false;
+         $('#msg_KPP1').html('Заполните поле').show();
+       }else{
+         $('#msg_KPP1').html('').hide();
+       }
+
+       var OGRN = $('#OGRN').val();
+       if(!OGRN && OGRN.length <= 0){
+         isValid = false;
+         $('#msg_OGRN').html('Заполните поле').show();
+       }else{
+         $('#msg_OGRN').html('').hide();
+       }
+
+       var AdrRF = $('#AdrRF').val();
+       if(!AdrRF && AdrRF.length <= 0){
+         isValid = false;
+         $('#msg_AdrRF').html('Заполните поле').show();
+       }else{
+         $('#msg_AdrRF').html('').hide();
+       }
+
+       var SNILS1 = $('#SNILS1').val();
+       if(!SNILS1 && SNILS1.length <= 0){
+         isValid = false;
+         $('#msg_SNILS1').html('Заполните поле').show();
+       }else{
+         $('#msg_SNILS1').html('').hide();
+       }
+
+       var Famil_y = $('#Famil_y').val();
+       if(!Famil_y && Famil_y.length <= 0){
+         isValid = false;
+         $('#msg_Famil_y').html('Заполните поле').show();
+       }else{
+         $('#msg_Famil_y').html('').hide();
+       }
+
+       var Ima_y = $('#Ima_y').val();
+       if(!Ima_y && Ima_y.length <= 0){
+         isValid = false;
+         $('#msg_Ima_y').html('Заполните поле').show();
+       }else{
+         $('#msg_Ima_y').html('').hide();
+       }
+
+
+
+       }
+
+       if (SvDover == 'ИнОргДовер'){
+        
+       
+       var NaimIO = $('#NaimIO').val();
+       if(!NaimIO && NaimIO.length <= 0){
+         isValid = false;
+         $('#msg_NaimIO').html('Заполните поле').show();
+       }else{
+         $('#msg_NaimIO').html('').hide();
+       }
+
+       var StrReg = $('#StrReg').val();
+       if(StrReg == 0){
+         isValid = false;
+         $('#msg_StrReg').html('Заполните поле').show();
+       }else{
+         $('#msg_StrReg').html('').hide();
+       }
+
+       var NaimRegOrg = $('#NaimRegOrg').val();
+       if(!NaimRegOrg && NaimRegOrg.length <= 0){
+         isValid = false;
+         $('#msg_NaimRegOrg').html('Заполните поле').show();
+       }else{
+         $('#msg_NaimRegOrg').html('').hide();
+       }
+
+       var RegNomer = $('#RegNomer').val();
+       if(!RegNomer && RegNomer.length <= 0){
+         isValid = false;
+         $('#msg_RegNomer').html('Заполните поле').show();
+       }else{
+         $('#msg_RegNomer').html('').hide();
+       }
+
+       var AdrStrReg = $('#AdrStrReg').val();
+       if(!AdrStrReg && AdrStrReg.length <= 0){
+         isValid = false;
+         $('#msg_AdrStrReg').html('Заполните поле').show();
+       }else{
+         $('#msg_AdrStrReg').html('').hide();
+       }
+
+       var Pol = $('#Pol').val();
+       if(Pol == 0){
+         isValid = false;
+         $('#msg_Pol').html('Заполните поле').show();
+       }else{
+         $('#msg_Pol').html('').hide();
+       }
+
+       var PrGragd = $('#PrGragd').val();
+       if(PrGragd == 0){
+         isValid = false;
+         $('#msg_PrGragd').html('Заполните поле').show();
+       }else{
+         $('#msg_PrGragd').html('').hide();
+       }
+
+       var Famil_y = $('#Famil_yio').val();
+       if(!Famil_y && Famil_y.length <= 0){
+         isValid = false;
+         $('#msg_Famil_yio').html('Заполните поле').show();
+       }else{
+         $('#msg_Famil_yio').html('').hide();
+       }
+
+       var Ima_y = $('#Ima_yio').val();
+       if(!Ima_y && Ima_y.length <= 0){
+         isValid = false;
+         $('#msg_Ima_yio').html('Заполните поле').show();
+       }else{
+         $('#msg_Ima_yio').html('').hide();
+       }
+
+
+
+       }
+
+       if (SvDover == 'ФЛДовер'){
+        
+       
+       var INNFLF = $('#INNFLF').val();
+       if(!INNFLF && INNFLF.length <= 0){
+         isValid = false;
+         $('#msg_INNFLF').html('Заполните поле').show();
+       }else{
+         $('#msg_INNFLF').html('').hide();
+       }
+
+       
+       var SNILSFL = $('#SNILSFL').val();
+       if(!SNILSFL && SNILSFL.length <= 0){
+         isValid = false;
+         $('#msg_SNILSFL').html('Заполните поле').show();
+       }else{
+         $('#msg_SNILSFL').html('').hide();
+       }
+
+       var Famil_yfl = $('#Famil_yfl').val();
+       if(!Famil_yfl && Famil_yfl.length <= 0){
+         isValid = false;
+         $('#msg_Famil_yfl').html('Заполните поле').show();
+       }else{
+         $('#msg_Famil_yfl').html('').hide();
+       }
+
+       var Ima_yfl = $('#Ima_yfl').val();
+       if(!Ima_yfl && Ima_yfl.length <= 0){
+         isValid = false;
+         $('#msg_Ima_yfl').html('Заполните поле').show();
+       }else{
+         $('#msg_Ima_yfl').html('').hide();
+       }
+
+
+
+       }
+
+       if (SvDover == 'ИПДовер'){
+        
+       
+       var INNIP = $('#INNIP').val();
+       if(!INNIP && INNIP.length <= 0){
+         isValid = false;
+         $('#msg_INNIP').html('Заполните поле').show();
+       }else{
+         $('#msg_INNIP').html('').hide();
+       }
+
+       var OGRNIP = $('#OGRNIP').val();
+       if(!OGRNIP && OGRNIP.length <= 0){
+         isValid = false;
+         $('#msg_OGRNIP').html('Заполните поле').show();
+       }else{
+         $('#msg_OGRNIP').html('').hide();
+       }
+
+       
+       var SNILSIP = $('#SNILSIP').val();
+       if(!SNILSIP && SNILSIP.length <= 0){
+         isValid = false;
+         $('#msg_SNILSIP').html('Заполните поле').show();
+       }else{
+         $('#msg_SNILSIP').html('').hide();
+       }
+
+       var Famil_yip = $('#Famil_yip').val();
+       if(!Famil_yip && Famil_yip.length <= 0){
+         isValid = false;
+         $('#msg_Famil_yip').html('Заполните поле').show();
+       }else{
+         $('#msg_Famil_yip').html('').hide();
+       }
+
+       var Ima_yip = $('#Ima_yip').val();
+       if(!Ima_yip && Ima_yip.length <= 0){
+         isValid = false;
+         $('#msg_Ima_yip').html('Заполните поле').show();
+       }else{
+         $('#msg_Ima_yip').html('').hide();
+       }
+       }
+
+       return isValid;   
+    }
+
+
+    function validateStep3(){
+       var isValid = true; 
+       // Validate Username   
+       
+       var INNP = $('#INNP').val();
+       if(!INNP && INNP.length <= 0){
+         isValid = false;
+         $('#msg_INNP').html('Заполните поле').show();
+       }else{
+         $('#msg_INNP').html('').hide();
+       }
+
+       var SNILSP = $('#SNILSP').val();
+       if(!SNILSP && SNILSP.length <= 0){
+         isValid = false;
+         $('#msg_SNILSP').html('Заполните поле').show();
+       }else{
+         $('#msg_SNILSP').html('').hide();
+       }
+
+       var DataRogdP = $('#DataRogdP').val();
+       if(!DataRogdP && DataRogdP.length <= 0){
+         isValid = false;
+         $('#msg_DataRogdP').html('Заполните поле').show();
+       }else{
+         $('#msg_DataRogdP').html('').hide();
+       }
+
+       var CodVidDoc = $('#CodVidDoc').val();
+       if(CodVidDoc == 0){
+         isValid = false;
+         $('#msg_CodVidDoc').html('Заполните поле').show();
+       }else{
+         $('#msg_CodVidDoc').html('').hide();
+       }
+
+       var SerNomDoc = $('#SerNomDoc').val();
+       if(!SerNomDoc && SerNomDoc.length <= 0){
+         isValid = false;
+         $('#msg_SerNomDoc').html('Заполните поле').show();
+       }else{
+         $('#msg_SerNomDoc').html('').hide();
+       }
+
+       var DataDoc = $('#DataDoc').val();
+       if(!DataDoc && DataDoc.length <= 0){
+         isValid = false;
+         $('#msg_DataDoc').html('Заполните поле').show();
+       }else{
+         $('#msg_DataDoc').html('').hide();
+       }
+
+       var Famil_p = $('#Famil_p').val();
+       if(!Famil_p && Famil_p.length <= 0){
+         isValid = false;
+         $('#msg_Famil_p').html('Заполните поле').show();
+       }else{
+         $('#msg_Famil_p').html('').hide();
+       }
+
+       var Ima_p = $('#Ima_p').val();
+       if(!Ima_p && Ima_p.length <= 0){
+         isValid = false;
+         $('#msg_Ima_p').html('Заполните поле').show();
+       }else{
+         $('#msg_Ima_p').html('').hide();
+       }
+       
+       return isValid;
+    }
+
+
+    function isValidOKUD(OKUD) {
+      var pattern = new RegExp(/^\d{1,}$/);
+      return pattern.test(OKUD);
+    } 
+    
+    
+    
+    
+    
+    
+</script>
+  </head>
+
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title">
+              <a href="#" class="site_title"><i class="fa icon-nuc"></i> <span> АО "НУЦ"</span></a></br>
+            </div>
+            <div class="clearfix"></div>
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              </br><div class="menu_section menu_section_first">
+                <ul class="nav side-menu">
+                  <li class="active"><a><i class="fa fa-home"></i> Создание МЧД <span class="fa fa-chevron-down"></span></a>
+                  </li>
+                  <li><a><i class="fa fa-edit"></i> Подписание МЧД <span class="fa fa-chevron-down"></span></a>
+                  </li>
+                  <li><a><i class="fa fa-desktop"></i> Проверка МЧД <span class="fa fa-chevron-down"></span></a>
+                  </li>
+                  <li><a><i class="fa fa-table"></i> Регистрация МЧД <span class="fa fa-chevron-down"></span></a>
+                  </li>
+                  </ul>
+              </div>
+
+            </div>
+            <!-- /sidebar menu -->
+          </div>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+          <div class="nav_menu">
+            <nav>
+              <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+              </div>
+
+              
+            </nav>
+          </div>
+        </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>Формирование МЧД</h3>
+              </div>
+            </div>
+
+            <div class="clearfix"></div>
+            <div class="row">
+
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_content">
+
+
+                    <!-- Smart Wizard -->
+            <form class="form-horizontal form-label-left" name="prov" action="1_01.php" method="post">
+                    <div id="wizard" class="form_wizard wizard_horizontal" >
+                      <ul class="wizard_steps">
+                        <li>
+                          <a href="#step-1">
+                            <span class="step_no">1</span>
+                            <span class="step_descr">
+                                              Данные доверенности<br />
+                                             
+                                          </span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#step-2">
+                            <span class="step_no">2</span>
+                            <span class="step_descr">
+                                              Данные о доверителе<br />
+                                              
+                                          </span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#step-3">
+                            <span class="step_no">3</span>
+                            <span class="step_descr">
+                                              Данные представителя<br />
+                                             
+                                          </span>
+                          </a>
+                        </li>
+                      </ul>
+          
+              <div id="step-1" >
+              
+              <div class="form-group">
+                <div class="control-label col-md-3 col-sm-3 col-xs-12" >
+                </div>
+                
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="IdFile">Идентификатор файла <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="IdFile" required="required" class="form-control col-md-7 col-xs-12" value="" readonly>
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="VersProg">Версия программы <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="VersProg" required="required" class="form-control col-md-7 col-xs-12" value="1" readonly>
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="VersForm">Версия формата <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="VersForm" required="required" class="form-control col-md-7 col-xs-12" value="1.01" readonly>
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="OKUD">Код формы по ОКУД <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="OKUD" name="OKUD" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                <span id="msg_okud"></span>
+                </div>
+
+                <div class="clearfix"></div>
+                <br />
+                <div class="form-group x_title">
+                <div class="control-label col-md-3 col-sm-3 col-xs-12" >
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <h2>Сведения доверенности</h2>
+                <div class="clearfix"></div>
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="NaimDoc">Наименование документа <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="NaimDoc" required="required" class="form-control col-md-7 col-xs-12" value="" readonly >
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="NomDover">Номер доверенности <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="NomDover" required="required" class="form-control col-md-7 col-xs-12" value="" readonly>
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="DataNach">Дата выдачи доверенности <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="date" id="DataNach" name="DataNach" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                <span id="msg_DataNach"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="DataOkon">Дата окончания доверенности <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="date" id="DataOkon" name="DataOkon" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                <span id="msg_DataOkon"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="SvedSistOtm">ИС, которая предоставит досочное прекращение действия <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="SvedSistOtm" value="http://" required="required" class="form-control col-md-7 col-xs-12" readonly>
+                </div>
+                </div>
+                
+              
+              </div>
+
+            
+
+            
+              <div id="step-2" style="height: 90%">
+              
+              <div class="form-group">
+                <div class="control-label col-md-3 col-sm-3 col-xs-12">
+                </div>
+                
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="SvDover">Сведения о доверителе <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select class="form-control col-md-7 col-xs-12" id="SvDover" name="SvDover" onchange="showBlock(this.value)">
+                  <option value="0">Выберите</option>
+                  <option value="РосОргДовер">Российское юридическое лицо</option>
+                  <option value="ИнОргДовер">Иностранное юридическое лицо</option>
+                  <option value="ФЛДовер">Физ. лицо</option>
+                  <option value="ИПДовер">ИП</option>
+                  </select>
+                </div><span id="msg_SvDover"></span></br>
+                
+                <div id="0" style="display: none;"></div> 
+
+                <div id="РосОргДовер" style="display: none;">
+                  <div class="form-group">
+                </br><label class="control-label col-md-3 col-sm-3 col-xs-12" for="NaimOrg">Наименование организации</br>(сокращенное) <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="NaimOrg" name="NaimOrg" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                <span id="msg_NaimOrg"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="INNYL1">ИНН организации <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="INNYL1" name="INNYL1" required="required" class="form-control col-md-7 col-xs-12" size="10">
+                </div>
+                <span id="msg_INNYL1"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="KPP1">КПП организации <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="KPP1" name="KPP1" required="required" class="form-control col-md-7 col-xs-12" maxlength="9">
+                </div>
+                <span id="msg_KPP1"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="OGRN">ОГРН <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="OGRN" name="OGRN" required="required" class="form-control col-md-7 col-xs-12" maxlength="13">
+                </div>
+                <span id="msg_OGRN"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="AdrRF">Адрес ЮЛ в РФ <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="AdrRF" name="AdrRF" required="required" class="form-control col-md-7 col-xs-12" placeholder="111020, г. Москва, ул. Авиамоторная, д. 8, стр. 2">
+                </div>
+                <span id="msg_AdrRF"></span>
+                </div>
+
+                <div class="clearfix"></div>
+                <br />
+                <div class="form-group x_title">
+                <div class="control-label col-md-3 col-sm-3 col-xs-12" >
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <h2>Сведения о лице, действующем от имени ЮЛ без доверенности</h2>
+                <div class="clearfix"></div>
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="INNFL1">ИНН ФЛ
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="INNFL1" required="required" class="form-control col-md-7 col-xs-12" maxlength="12">
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="SNILS1">СНИЛС <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="SNILS1" name="SNILS1" required="required" class="form-control col-md-7 col-xs-12" maxlength="12">
+                </div>
+                <span id="msg_SNILS1"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Graghd">Гражданство ФЛ 
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select name= "Graghd"class="form-control col-md-7 col-xs-12" >
+                  <option value="0">Выберите нужный вариант</option>
+                  <option value="004">004 АФГАНИСТАН</option>
+                  <option value="008">008 АЛБАНИЯ</option>
+                  <option value="010">010 АНТАРКТИДА</option>
+                  <option value="016">016 АЛЖИР</option>
+                  <option value="004">004 АМЕРИКАНСКОЕ САМОА</option>
+                  <option value="020">020 АНДОРРА</option>
+                  <option value="024">024 АНГОЛА</option>
+                  <option value="028">АНТИГУА И БАРБУДА</option>
+                  <option value="031">031 АЗЕРБАЙДЖАН</option>
+                  <option value="032">032 АРГЕНТИНА</option>
+                  <option value="036">036 АВСТРАЛИЯ</option>
+                  <option value="040">040 АВСТРИЯ</option>
+                  <option value="044">044 БАГАМЫ</option>
+                  <option value="048">048 БАХРЕЙН</option>
+                  <option value="050">050 БАНГЛАДЕШ</option>
+                  </select>
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="DataRogd">Дата Рождения ФЛ 
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="date" id="DataRogd" name="DataRogd" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Dolghn">Должность 
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="Dolghn" required="required" class="form-control col-md-7 col-xs-12" maxlength="12">
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Famil_y">Фамилия <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="Famil_y" name="Famil_y" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                <span id="msg_Famil_y"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Ima_y">Имя <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="Ima_y" name="Ima_y" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                <span id="msg_Ima_y"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Otch_y">Отчество 
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="Otch_y" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                </div>
+
+                </div>
+                
+
+                <div id="ИнОргДовер" style="display: none;">
+                  <div class="form-group">
+                </br><label class="control-label col-md-3 col-sm-3 col-xs-12" for="NaimIO">Наименование иностранной организации <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="NaimIO" name="NaimIO" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                <span id="msg_NaimIO"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="INNYL">ИНН организации 
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="INNYL" required="required" class="form-control col-md-7 col-xs-12" maxlength="10">
+                </div>
+
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="KPP">КПП обособленного подразделения 
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="KPP" required="required" class="form-control col-md-7 col-xs-12" maxlength="9">
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="StrReg">Страна регистрации <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select id= "StrReg" name= "StrReg"class="form-control col-md-7 col-xs-12" >
+                  <option value="0">Выберите нужный вариант</option>
+                  <option value="004">004 АФГАНИСТАН</option>
+                  <option value="008">008 АЛБАНИЯ</option>
+                  <option value="010">010 АНТАРКТИДА</option>
+                  <option value="016">016 АЛЖИР</option>
+                  <option value="004">004 АМЕРИКАНСКОЕ САМОА</option>
+                  <option value="020">020 АНДОРРА</option>
+                  <option value="024">024 АНГОЛА</option>
+                  <option value="028">АНТИГУА И БАРБУДА</option>
+                  <option value="031">031 АЗЕРБАЙДЖАН</option>
+                  <option value="032">032 АРГЕНТИНА</option>
+                  <option value="036">036 АВСТРАЛИЯ</option>
+                  <option value="040">040 АВСТРИЯ</option>
+                  <option value="044">044 БАГАМЫ</option>
+                  <option value="048">048 БАХРЕЙН</option>
+                  <option value="050">050 БАНГЛАДЕШ</option>
+                  </select>
+                </div>
+                <span id="msg_StrReg"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="NaimRegOrg">Наименование регистрирующего органа <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="NaimRegOrg" name="NaimRegOrg" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                <span id="msg_NaimRegOrg"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="RegNomer">Регистрационный номер <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="RegNomer" name="RegNomer" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                <span id="msg_RegNomer"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="AdrStrReg">Адрес ЮЛ на территории гос-ва, на котором оно зарегистрировано <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="AdrStrReg" name="AdrStrReg" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                <span id="msg_AdrStrReg"></span>
+                </div>
+
+                <div class="clearfix"></div>
+                <br />
+                <div class="form-group x_title">
+                <div class="control-label col-md-3 col-sm-3 col-xs-12" >
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <h2>Сведения о руководителе обособленного подразделения</h2>
+                <div class="clearfix"></div>
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="INNFL">ИНН ФЛ-руководителя обособленного производителя 
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="INNFL" required="required" class="form-control col-md-7 col-xs-12" maxlength="12">
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Pol">Пол <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select id= "Pol" name= "Pol"class="form-control col-md-7 col-xs-12" >
+                  <option value="0">Выберите нужный вариант</option>
+                  <option value="M">Мужской </option>
+                  <option value="W">Женский</option>
+                  </select>
+                </div>
+                <span id="msg_Pol"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="DataRogdIF">Дата рождения ФЛ 
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="date" name="DataRogdIF" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="MestoRogd">Место рождения 
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="MestoRogd" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="PrGragd">Признак наличия гражданства<span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select class="form-control col-md-7 col-xs-12" id="PrGragd" name="PrGragd" onchange="showBlock1(this.value)">
+                  <option value="0">Выберите</option>
+                  <option value="1">РФ</option>
+                  <option value="2">Иностранное лицо</option>
+                  <option value="3">Лицо без гражданства</option>
+                  </select>
+                </div>
+                <span id="msg_PrGragd"></span>
+                </div>
+
+                <div id="id1" style="display: none;"></div>
+                <div id="id2" style="display: none;">
+                  <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Graghd">Гражданство ФЛ <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select name= "Graghd"class="form-control col-md-7 col-xs-12" >
+                  <option value="0">Выберите нужный вариант</option>
+                  <option value="004">004 АФГАНИСТАН</option>
+                  <option value="008">008 АЛБАНИЯ</option>
+                  <option value="010">010 АНТАРКТИДА</option>
+                  <option value="016">016 АЛЖИР</option>
+                  <option value="004">004 АМЕРИКАНСКОЕ САМОА</option>
+                  <option value="020">020 АНДОРРА</option>
+                  <option value="024">024 АНГОЛА</option>
+                  <option value="028">АНТИГУА И БАРБУДА</option>
+                  <option value="031">031 АЗЕРБАЙДЖАН</option>
+                  <option value="032">032 АРГЕНТИНА</option>
+                  <option value="036">036 АВСТРАЛИЯ</option>
+                  <option value="040">040 АВСТРИЯ</option>
+                  <option value="044">044 БАГАМЫ</option>
+                  <option value="048">048 БАХРЕЙН</option>
+                  <option value="050">050 БАНГЛАДЕШ</option>
+                  </select>
+                </div>
+                </div>
+
+
+
+                </div>
+
+
+                <div id="id3" style="display: none;"></div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Famil_yio">Фамилия <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="Famil_yio" name="Famil_yio" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                <span id="msg_Famil_yio"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Ima_yio">Имя <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="Ima_yio" name="Ima_yio" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                <span id="msg_Ima_yio"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Otch_yio">Отчество 
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="Otch_yio" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                </div>
+                </div>
+                
+                <div id="ФЛДовер" style="display: none;">
+
+                  <div class="form-group">
+                </br><label class="control-label col-md-3 col-sm-3 col-xs-12" for="INNFLF">ИНН ФЛ <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="INNFLF" name="INNFLF" required="required" class="form-control col-md-7 col-xs-12" maxlength="12">
+                </div>
+                <span id="msg_INNFLF"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="SNILSFL">СНИЛС <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="SNILSFL" name="SNILSFL" required="required" class="form-control col-md-7 col-xs-12" maxlength="15">
+                </div>
+                <span id="msg_SNILSFL"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="GraghdFL">Гражданство ФЛ 
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select name = "GraghdFL"class="form-control col-md-7 col-xs-12" >
+                  <option value="0">Выберите нужный вариант</option>
+                  <option value="004">004 АФГАНИСТАН</option>
+                  <option value="008">008 АЛБАНИЯ</option>
+                  <option value="010">010 АНТАРКТИДА</option>
+                  <option value="016">016 АЛЖИР</option>
+                  <option value="004">004 АМЕРИКАНСКОЕ САМОА</option>
+                  <option value="020">020 АНДОРРА</option>
+                  <option value="024">024 АНГОЛА</option>
+                  <option value="028">АНТИГУА И БАРБУДА</option>
+                  <option value="031">031 АЗЕРБАЙДЖАН</option>
+                  <option value="032">032 АРГЕНТИНА</option>
+                  <option value="036">036 АВСТРАЛИЯ</option>
+                  <option value="040">040 АВСТРИЯ</option>
+                  <option value="044">044 БАГАМЫ</option>
+                  <option value="048">048 БАХРЕЙН</option>
+                  <option value="050">050 БАНГЛАДЕШ</option>
+                  </select>
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="DataRogdFL">Дата рождения ФЛ 
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="date" id="DataRogdFL" name="DataRogd" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                </div>
+
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Famil_yfl">Фамилия <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="Famil_yfl" name="Famil_yfl" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                <span id="msg_Famil_yfl"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Ima_yfl">Имя <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="Ima_yfl" name="Ima_yfl" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                <span id="msg_Ima_yfl"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Otch_yfl">Отчество 
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="Otch_yfl" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                </div>
+
+
+
+                </div>
+
+                <div id="ИПДовер" style="display: none;">
+
+                  <div class="form-group">
+                </br><label class="control-label col-md-3 col-sm-3 col-xs-12" for="INNIP">ИНН ФЛ <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="INNIP" name="INNIP" required="required" class="form-control col-md-7 col-xs-12" maxlength="12">
+                </div>
+                <span id="msg_INNIP"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="OGRNIP">ОГРНИП <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="OGRNIP" name="OGRNIP" required="required" class="form-control col-md-7 col-xs-12" maxlength="15">
+                </div>
+                <span id="msg_OGRNIP"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="SNILSIP">СНИЛС <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="SNILSIP" name="SNILSIP" required="required" class="form-control col-md-7 col-xs-12" maxlength="15">
+                </div>
+                <span id="msg_SNILSIP"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="GraghdIP">Гражданство ФЛ 
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select name = "GraghdIP"class="form-control col-md-7 col-xs-12" >
+                  <option value="0">Выберите нужный вариант</option>
+                  <option value="004">004 АФГАНИСТАН</option>
+                  <option value="008">008 АЛБАНИЯ</option>
+                  <option value="010">010 АНТАРКТИДА</option>
+                  <option value="016">016 АЛЖИР</option>
+                  <option value="004">004 АМЕРИКАНСКОЕ САМОА</option>
+                  <option value="020">020 АНДОРРА</option>
+                  <option value="024">024 АНГОЛА</option>
+                  <option value="028">АНТИГУА И БАРБУДА</option>
+                  <option value="031">031 АЗЕРБАЙДЖАН</option>
+                  <option value="032">032 АРГЕНТИНА</option>
+                  <option value="036">036 АВСТРАЛИЯ</option>
+                  <option value="040">040 АВСТРИЯ</option>
+                  <option value="044">044 БАГАМЫ</option>
+                  <option value="048">048 БАХРЕЙН</option>
+                  <option value="050">050 БАНГЛАДЕШ</option>
+                  </select>
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="DataRogdIP">Дата рождения ФЛ 
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="date" name="DataRogdIP" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                </div>
+
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Famil_yip">Фамилия <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="Famil_yip" name="Famil_yip" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                <span id="msg_Famil_yip"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Ima_yip">Имя <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="Ima_yip" name="Ima_yip" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                <span id="msg_Ima_yip"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Otch_yip">Отчество 
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="Otch_yip" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                </div>
+
+
+
+                </div>
+                
+                
+              
+              </div>
+
+            </div>
+
+            
+              <div id="step-3" style="height: 100%">
+              
+              <div class="form-group">
+                <div class="control-label col-md-3 col-sm-3 col-xs-12" >
+                </div>
+                
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="PrPered">Право передоверия <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select name= "PrPered"class="form-control col-md-7 col-xs-12" >
+                  <option value="0">Запретить</option>
+                  <option value="1">Разрешить</option>
+                  
+                  </select>
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="IdPoln">Идентификатор полномочий <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select name= "IdPoln"class="form-control col-md-7 col-xs-12" >
+                  <option value="0">Выберите нужный вариант</option>
+                  <option value="01">Подписывать договоры</option>
+                  <option value="02">Подписывать акты</option>
+                  <option value="03">Подписывать дарственные</option>
+                  <option value="0">Подписывать транспортные накладные</option>
+                  
+                  </select>
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="TextPoln">Текстовое описание полномочий</br>(при отсутствии полномочий в списке)
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <textarea name="TextPoln" required="required" class="form-control" name="message" data-parsley-trigger="keyup"data-parsley-validation-threshold="10"></textarea>
+                </div>
+                </div>
+
+                <div class="clearfix"></div>
+                <br />
+                <div class="form-group x_title">
+                <div class="control-label col-md-3 col-sm-3 col-xs-12" >
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <h2>Сведения о ФЛ, в том числе ИП(Подписант)</h2>
+                <div class="clearfix"></div>
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="INNP">ИНН ФЛ <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="INNP" name="INNP" required="required" class="form-control col-md-7 col-xs-12" maxlength="12">
+                </div>
+                <span id="msg_INNP"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="SNILSP">СНИЛС <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="SNILSP" name="SNILSP" required="required" class="form-control col-md-7 col-xs-12" maxlength="15">
+                </div>
+                <span id="msg_SNILSP"></span>
+                </div>
+
+                
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Graghd">Гражданство ФЛ 
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select name= "Graghd"class="form-control col-md-7 col-xs-12" >
+                  <option value="0">Выберите нужный вариант</option>
+                  <option value="004">004 АФГАНИСТАН</option>
+                  <option value="008">008 АЛБАНИЯ</option>
+                  <option value="010">010 АНТАРКТИДА</option>
+                  <option value="016">016 АЛЖИР</option>
+                  <option value="004">004 АМЕРИКАНСКОЕ САМОА</option>
+                  <option value="020">020 АНДОРРА</option>
+                  <option value="024">024 АНГОЛА</option>
+                  <option value="028">АНТИГУА И БАРБУДА</option>
+                  <option value="031">031 АЗЕРБАЙДЖАН</option>
+                  <option value="032">032 АРГЕНТИНА</option>
+                  <option value="036">036 АВСТРАЛИЯ</option>
+                  <option value="040">040 АВСТРИЯ</option>
+                  <option value="044">044 БАГАМЫ</option>
+                  <option value="048">048 БАХРЕЙН</option>
+                  <option value="050">050 БАНГЛАДЕШ</option>
+                  </select>
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="DataRogdP">Дата рождения ФЛ <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="date" id="DataRogdP" name="DataRogdP" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                <span id="msg_DataRogdP"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Famil_p">Фамилия ФЛ <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="Famil_p" name="Famil_p" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                <span id="msg_Famil_p"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Ima_p">Имя ФЛ <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="Ima_p" name="Ima_p" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                <span id="msg_Ima_p"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="Otch_p">Отчество ФЛ 
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="Otch_p" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                </div>
+
+                <div class="clearfix"></div>
+                <br />
+                <div class="form-group x_title">
+                <div class="control-label col-md-3 col-sm-3 col-xs-12" >
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <h2>Сведения о документе, удостоверяющем личность ФЛ(Представителя)</h2>
+                <div class="clearfix"></div>
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="CodVidDoc">Код вида документа <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select id= "CodVidDoc" name= "CodVidDoc"class="form-control col-md-7 col-xs-12" >
+                  <option value="21">Паспорт гражданина Российской Федерации</option>
+                  <option value="07">Военный билет</option>
+                  <option value="10">Паспорт иностранного гражданина</option>
+                  <option value="11">Свидетельство о рассмотрении ходатайства о признании лица беженцем на территории Российской Федерации по существу</option>
+                  <option value="12">Вид на жительство в Российской Федерации</option>
+                  <option value="13">Удостоверение беженца</option>
+                  <option value="15">Разрешение на временное проживание в Российской Федерации</option>
+                  <option value="19">Свидетельство о предоставлении временного убежища на территории Российской Федерации</option>
+                  
+                  <option value="24">Удостоверение личности военнослужащего Российской Федерации</option>
+                  </select>
+                </div>
+                <span id="msg_CodVidDoc"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="SerNomDoc">Серия и номер документа <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" id="SerNomDoc" name="SerNomDoc" required="required" class="form-control col-md-7 col-xs-12" minlength="1" maxlength="25">
+                </div>
+                <span id="msg_SerNomDoc"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="DataDoc">Дата выдачи документа <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="date" id="DataDoc" name="DataDoc" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+                <span id="msg_DataDoc"></span>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="VidDoc">Наименование органа, вдавшего документ 
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="VidDoc" required="required" class="form-control col-md-7 col-xs-12" minlength="1" maxlength="255">
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="CodVidaDoc">Код подразделения органа, выдавшего документ 
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" name="CodVidaDoc" required="required" class="form-control col-md-7 col-xs-12" minlength="7" maxlength="7">
+                </div>
+                </div>
+
+                </div>
+
+              
+              
+              
+
+            </div></form>
+
+            
+                    </div>
+
+
+
+              <br />
+              * Поля, обязательные для заполнения.
+            </div></div>
+            
+            
+          </div></div></div></div></div></div></div>
+
+
+              <footer>
+          <div class="pull-right">
+            © 2009-2022 Все права защищены
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <script type="text/javascript">
+         function myFunction(){
+    var d = new Date();
+    var den = d.getDate();
+    var m = 1+d.getMonth();
+    var g = d.getFullYear();
+    var data = den+""+m+""+g;
+
+    var d = new Date().getTime();//Timestamp
+    var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now()*1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
+    return 'ON_DOVBB_'+data+'_xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16;//random number between 0 and 16
+        if(d > 0){//Use timestamp until depleted
+            r = (d + r)%16 | 0;
+            d = Math.floor(d/16);
+        } else {//Use microseconds since page-load if supported
+            r = (d2 + r)%16 | 0;
+            d2 = Math.floor(d2/16);
+        }
+        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+}
+var temp = document.querySelector('[name=IdFile]').value = myFunction();
+document.querySelector('[name=NaimDoc]').value = document.querySelector('[name=IdFile]').value;
+document.querySelector('[name=NomDover]').value = temp.substr(temp.lastIndexOf('_')+1);
+        </script>
+
+
+            
+              <!-- jQuery -->
+    <script src="vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="vendors/nprogress/nprogress.js"></script>
+    <!-- jQuery Smart Wizard -->
+    <script src="js/jquery.smartWizard.js"></script>
+    
+
+
+    <!-- Custom Theme Scripts -->
+    <script src="build/js/custom.min.js"></script>
+    <!-- Switchery -->
+    <script src="vendors/switchery/dist/switchery.min.js"></script>
+    <script src="m4d.js"></script>
+
+            </body></html>
